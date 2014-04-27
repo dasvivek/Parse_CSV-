@@ -67,8 +67,8 @@ def profunc():
 					writer.writerow((p))
 
 		
-	#except Exception,e:
-	#	print str(e)
+	except Exception,e:
+		print str(e)
 	finally:
 		file.close()
 	
