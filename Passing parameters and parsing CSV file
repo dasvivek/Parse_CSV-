@@ -6,63 +6,54 @@ d = collections.defaultdict(list)
 
 file = open('CrimeStatebyState.csv', 'rb')
 
-def profunc():
+def profunc(inum):
 	try:
 		with open("output.csv", "wb") as csv_file:
 			writer = csv.writer(csv_file, delimiter=',',quotechar=' ')
 			reader = csv.DictReader(file, delimiter=',')
 			
-			if len(sys.argv) == 6:
-				s = [sys.argv[1]+" "+sys.argv[2]+" "+sys.argv[3]+" "+sys.argv[4]+" "+sys.argv[5]+" "+"Count"]
-				writer.writerow(s)
+			s = []
+			for icount in range(0,inum-1):
+				s.append(sys.argv[icount + 1])
+			s.append("Count")
+			writer.writerow(s)
+			
+			if inum == 6:
 				for row in reader:
-					d[row[sys.argv[1]]+" "+row[sys.argv[2]]+" "+row[sys.argv[3]]+" "+row[sys.argv[4]]+" "+row[sys.argv[5]]].append(int(row["Count"]))
+					d[row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]],row[sys.argv[5]]].append(int(row["Count"]))
 				for (row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]],row[sys.argv[5]]), row["Count"] in sorted(d.items()):
-					#p='%s,%d' % (row[sys.argv[1]],row[sys.argv[2]], sum(row["Count"]))
-					p = [str(row[sys.argv[1]])+" "+str(row[sys.argv[2]])+" "+str(row[sys.argv[3]])+" "+str(row[sys.argv[4]])+" "+str(row[sys.argv[5]])+" "+str(sum(row["Count"]))]
+					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(row[sys.argv[3]]),str(row[sys.argv[4]]),str(row[sys.argv[5]]),str(sum(row["Count"]))]
 					print p
-					writer.writerow((p))
-			if len(sys.argv) == 5:
-				s = [sys.argv[1]+" "+sys.argv[2]+" "+sys.argv[3]+" "+sys.argv[4]+" "+"Count"]
-				writer.writerow(s)
+					writer.writerow((p))	
+			if inum == 5:
 				for row in reader:
 					d[row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]]].append(int(row["Count"]))
 				for (row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]]), row["Count"] in sorted(d.items()):
-					#p='%s,%d' % (row[sys.argv[1]],row[sys.argv[2]], sum(row["Count"]))
-					p = [str(row[sys.argv[1]])+" "+str(row[sys.argv[2]])+" "+str(row[sys.argv[3]])+" "+str(row[sys.argv[4]])+" "+str(sum(row["Count"]))]
+					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(row[sys.argv[3]]),str(row[sys.argv[4]]),str(sum(row["Count"]))]
 					print p
 					writer.writerow((p))
 			
-			if len(sys.argv) == 4:
-				s = [sys.argv[1]+" "+sys.argv[2]+" "+sys.argv[3]+" "+"Count"]
-				writer.writerow(s)
+			if inum == 4:
 				for row in reader:
 					d[row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]]].append(int(row["Count"]))
 				for (row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]]), row["Count"] in sorted(d.items()):
-					#p='%s,%d' % (row[sys.argv[1]],row[sys.argv[2]], sum(row["Count"]))
-					p = [str(row[sys.argv[1]])+" "+str(row[sys.argv[2]])+" "+str(row[sys.argv[3]])+" "+str(sum(row["Count"]))]
+					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(row[sys.argv[3]]),str(sum(row["Count"]))]
 					print p
 					writer.writerow((p))
 					
-			if len(sys.argv) == 3:
-				s = [sys.argv[1]+" "+sys.argv[2]+" "+"Count"]
-				writer.writerow(s)
+			if inum == 3:
 				for row in reader:
 					d[row[sys.argv[1]],row[sys.argv[2]]].append(int(row["Count"]))
 				for (row[sys.argv[1]],row[sys.argv[2]]), row["Count"] in sorted(d.items()):
-					#p='%s,%d' % (row[sys.argv[1]],row[sys.argv[2]], sum(row["Count"]))
-					p = [str(row[sys.argv[1]])+" "+str(row[sys.argv[2]])+" "+str(sum(row["Count"]))]
+					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(sum(row["Count"]))]
 					print p
 					writer.writerow((p))
 					
-			if len(sys.argv) == 2:
-				s = [sys.argv[1]+" "+"Count"]
-				writer.writerow(s)
+			if inum == 2:
 				for row in reader:
 					d[row[sys.argv[1]]].append(int(row["Count"]))
 				for (row[sys.argv[1]]), row["Count"] in sorted(d.items()):
-					#p='%s,%d' % (row[sys.argv[1]], sum(row["Count"]))
-					p = [str(row[sys.argv[1]])+" "+str(sum(row["Count"]))]
+					p = [str(row[sys.argv[1]]),str(sum(row["Count"]))]
 					print p
 					writer.writerow((p))
 
@@ -73,7 +64,7 @@ def profunc():
 		file.close()
 	
 if __name__ == '__main__':
-	if len(sys.argv) < 2:
+	if len(sys.argv) <= 1:
 		print ""
 		print "Please provide parameter from the below list :- "
 		print ""
@@ -89,4 +80,4 @@ if __name__ == '__main__':
 		print "[State Crime \"Type of Crime\" Year Count]"
 		print ""
 		sys.exit()
-	profunc()
+	profunc(len(sys.argv))
