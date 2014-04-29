@@ -1,8 +1,7 @@
 import sys
 import csv
-import collections
 
-d = collections.defaultdict(list)
+e = {}
 
 file = open('CrimeStatebyState.csv', 'rb')
 
@@ -13,51 +12,29 @@ def profunc(inum):
 			reader = csv.DictReader(file, delimiter=',')
 			
 			s = []
-			for icount in range(0,inum-1):
-				s.append(sys.argv[icount + 1])
+			for icount in range(1,inum):
+				s.append(sys.argv[icount])
 			s.append("Count")
 			writer.writerow(s)
 			
-			if inum == 6:
-				for row in reader:
-					d[row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]],row[sys.argv[5]]].append(int(row["Count"]))
-				for (row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]],row[sys.argv[5]]), row["Count"] in sorted(d.items()):
-					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(row[sys.argv[3]]),str(row[sys.argv[4]]),str(row[sys.argv[5]]),str(sum(row["Count"]))]
-					print p
-					writer.writerow((p))	
-			if inum == 5:
-				for row in reader:
-					d[row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]]].append(int(row["Count"]))
-				for (row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]],row[sys.argv[4]]), row["Count"] in sorted(d.items()):
-					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(row[sys.argv[3]]),str(row[sys.argv[4]]),str(sum(row["Count"]))]
-					print p
-					writer.writerow((p))
 			
-			if inum == 4:
-				for row in reader:
-					d[row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]]].append(int(row["Count"]))
-				for (row[sys.argv[1]],row[sys.argv[2]],row[sys.argv[3]]), row["Count"] in sorted(d.items()):
-					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(row[sys.argv[3]]),str(sum(row["Count"]))]
-					print p
-					writer.writerow((p))
-					
-			if inum == 3:
-				for row in reader:
-					d[row[sys.argv[1]],row[sys.argv[2]]].append(int(row["Count"]))
-				for (row[sys.argv[1]],row[sys.argv[2]]), row["Count"] in sorted(d.items()):
-					p = [str(row[sys.argv[1]]),str(row[sys.argv[2]]),str(sum(row["Count"]))]
-					print p
-					writer.writerow((p))
-					
-			if inum == 2:
-				for row in reader:
-					d[row[sys.argv[1]]].append(int(row["Count"]))
-				for (row[sys.argv[1]]), row["Count"] in sorted(d.items()):
-					p = [str(row[sys.argv[1]]),str(sum(row["Count"]))]
-					print p
-					writer.writerow((p))
+			for row in reader:
+				l1 = ""
+				for icount in range(1,inum):
+					if l1 is not "": 
+						l1 = l1 +"," + row[sys.argv[icount]]
+					else:
+						l1 = row[sys.argv[icount]]
+				
+				if not e.has_key(l1): e[l1] = 0
+				e[l1] = e[l1] + int(row["Count"])
 
-		
+			
+			for dictkey in e.keys():
+				p = [dictkey,e[dictkey]]
+				print p
+				writer.writerow((p))
+				
 	except Exception,e:
 		print str(e)
 	finally:
